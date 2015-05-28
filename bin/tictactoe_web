@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
+$LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
+
+require 'tictactoe/web/runner'
+Tictactoe::Web::Runner.new.run
