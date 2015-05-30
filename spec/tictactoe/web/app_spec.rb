@@ -15,5 +15,9 @@ describe Tictactoe::Web::App do
     it 'succeeds' do
       expect(last_response).to be_ok
     end
+
+    it 'contains the board' do
+      expect(last_response.body).to include('data-id="board"')
+    end
   end
 end

@@ -8,6 +8,7 @@ module Tictactoe
           map "/board" do
             board = lambda do |environment|
               res = Rack::Response.new
+              res.write('data-id="board"')
               res.finish
             end
             run board
