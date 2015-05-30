@@ -37,6 +37,7 @@ end
 
 def rspec_task(task_name, &block)
   RSpec::Core::RakeTask.new(task_name) do |task|
+    task.verbose = false
     RSpecTask.new(task).eval(&block)
   end
 end
