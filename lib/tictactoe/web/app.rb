@@ -8,8 +8,8 @@ module Tictactoe
           map "/board" do
             board = lambda do |environment|
               res = Rack::Response.new
-              board = '<div data-board/>'
-              cell = '<div data-board-cell/>'
+              board = '<div data-board></div>'
+              cell = '<div data-board-cell></div>'
               res.write(board + cell * 9)
               res.finish
             end
