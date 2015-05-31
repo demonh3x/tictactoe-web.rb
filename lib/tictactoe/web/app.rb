@@ -5,30 +5,37 @@ require 'tictactoe/web/make_move'
 module Tictactoe
   module Web
     class App
-      attr_accessor :app
-
-      def initialize
+      def self.new
         show_board = ShowBoard.new
         start_game = StartGame.new
         make_move = MakeMove.new
 
-        self.app = Rack::Builder.new do
-          map '/board' do
+        Rack::Builder.new do
+          map '/game/board' do
             run show_board
           end
 
           map '/game/start' do
-            run start_game
+            run ->(environment) do
+              start_game.call(environment)
+              App.redirect_to('/game/board')
+            end
           end
 
           map '/game/make_move' do
-            run make_move
+            run ->(environment) do
+              make_move.call(environment)
+              App.redirect_to('/game/board')
+            end
           end
         end
       end
 
-      def call(environment)
-        app.call(environment)
+      private
+      def self.redirect_to(route)
+        response = Rack::Response.new
+        response.redirect(route)
+        response.finish
       end
     end
   end

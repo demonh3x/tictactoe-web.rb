@@ -2,9 +2,6 @@ module Tictactoe
   module Web
     class StartGame
       def call(environment)
-        response = Rack::Response.new
-        response.redirect('/board')
-        response.finish
       end
     end
   end
