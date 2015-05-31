@@ -19,11 +19,22 @@ describe Tictactoe::Web::App do
     end
 
     it 'contains a board' do
-      expect(html.css('[data-board]').length).to be 1
+      expect(html.css('[data-board]').length).to eq 1
     end
 
     it 'contains the board cells' do
-      expect(html.css("[data-board-cell]").length).to eq 9
+      expect(html.css('[data-board-cell]').length).to eq 9
+    end
+  end
+
+  describe 'when making a move' do
+    before(:each) do
+      post '/game/make_move', params={:move => 0}
+      follow_redirect!
+    end
+
+    it 'succeeds' do
+      expect(last_response).to be_ok
     end
   end
 end
