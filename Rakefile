@@ -14,3 +14,7 @@ namespace :spec do
     add_opts "--color -fd"
   end
 end
+
+task :run do
+  `rackup`
+end
