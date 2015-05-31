@@ -8,11 +8,14 @@ module Tictactoe
           map "/board" do
             board = lambda do |environment|
               res = Rack::Response.new
-              res.write('data-id="board"')
+              board = '<div data-board/>'
+              cell = '<div data-board-cell/>'
+              res.write(board + cell * 9)
               res.finish
             end
             run board
           end
+
           map "/game/start" do
             start_game = lambda do |environment|
               res = Rack::Response.new
