@@ -37,5 +37,9 @@ describe Tictactoe::Web::App do
     it 'succeeds' do
       expect(last_response).to be_ok
     end
+
+    it 'shows the move' do
+      expect(html.css('[data-board-cell="x"]').length).to eq 1
+    end
   end
 end
