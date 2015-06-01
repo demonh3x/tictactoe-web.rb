@@ -30,6 +30,10 @@ RSpec.describe Tictactoe::Web::ShowBoard do
     it 'contains the board cells' do
       expect(html.css('[data-board-cell]').length).to eq 9
     end
+
+    it 'contains the links to the moves' do
+      expect(html.css('a').length).to eq 9
+    end
   end
 
   it 'shows the first mark of a game' do
@@ -58,5 +62,14 @@ RSpec.describe Tictactoe::Web::ShowBoard do
     ])
     expect(html.css('[data-board-cell="x"]').length).to eq 5
     expect(html.css('[data-board-cell="o"]').length).to eq 4
+  end
+
+  it 'there are no links when the board is full' do
+    html = get_html([
+      :o, :x, :o,
+      :x, :o, :x,
+      :x, :o, :x,
+    ])
+    expect(html.css('a').length).to eq 0
   end
 end

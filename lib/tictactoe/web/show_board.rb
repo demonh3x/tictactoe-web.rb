@@ -7,17 +7,22 @@ module Tictactoe
 
       def call()
         marks = game_gateway[:game].marks
-
-        board = '<div data-board></div>'
-        cells = marks.map do |mark|
-          if mark
-            "<div data-board-cell=\"#{mark.to_s}\"></div>"
-          else
-            "<div data-board-cell></div>"
-          end
-        end
-
-        board + cells.join
+        template = %{
+          <div data-board>
+            <% marks.each_with_index do |mark, index| %>
+            <div data-board-cell="<%= mark.to_s %>">
+              <% if mark %>
+                <%= mark.to_s %>
+              <% else %>
+              <a href="/game/make_move?move=<%= index.to_s %>">
+                <%= index.to_s %>
+              </a>
+              <% end %>
+            </div>
+            <% end %>
+          </div>
+        }
+        ERB.new(template).result(binding)
       end
 
       private

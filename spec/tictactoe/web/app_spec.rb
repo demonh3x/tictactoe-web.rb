@@ -25,6 +25,22 @@ describe Tictactoe::Web::App do
     it 'contains the board cells' do
       expect(html.css('[data-board-cell]').length).to eq 9
     end
+
+    it 'contain the links to the moves' do
+      anchors = html.css('[data-board] a')
+      links = anchors.map {|anchor| anchor.attributes['href'].value}
+      expect(links).to eq([
+        '/game/make_move?move=0',
+        '/game/make_move?move=1',
+        '/game/make_move?move=2',
+        '/game/make_move?move=3',
+        '/game/make_move?move=4',
+        '/game/make_move?move=5',
+        '/game/make_move?move=6',
+        '/game/make_move?move=7',
+        '/game/make_move?move=8'
+      ])
+    end
   end
 
   describe 'when making a move' do
@@ -40,6 +56,12 @@ describe Tictactoe::Web::App do
 
     it 'shows the move' do
       expect(html.css('[data-board-cell="x"]').length).to eq 1
+    end
+
+    it 'does not contain the link to the move made' do
+      anchors = html.css('[data-board] a')
+      links = anchors.map {|anchor| anchor.attributes['href'].value}
+      expect(links).not_to include('/game/make_move?move=0')
     end
   end
 end
