@@ -10,7 +10,7 @@ describe Tictactoe::Web::App do
 
   describe 'when starting a game' do
     before(:each) do
-      post '/game/start'
+      get '/game/start'
       follow_redirect!
     end
 
@@ -29,7 +29,8 @@ describe Tictactoe::Web::App do
 
   describe 'when making a move' do
     before(:each) do
-      post '/game/make_move', params={:move => 0}
+      get '/game/start'
+      get '/game/make_move', params={:move => 0}
       follow_redirect!
     end
 
