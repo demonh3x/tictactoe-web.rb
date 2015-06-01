@@ -5,7 +5,7 @@ require 'nokogiri'
 describe Tictactoe::Web::App do
   include Rack::Test::Methods
 
-  let(:app)  { described_class.new }
+  let(:app)  { Rack::Builder.parse_file('config.ru').first }
   let(:html) { Nokogiri::HTML(last_response.body) }
 
   describe 'when starting a game' do
