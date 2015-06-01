@@ -32,17 +32,31 @@ RSpec.describe Tictactoe::Web::ShowBoard do
     end
   end
 
-  describe 'given a board with the first move' do
-    let(:html) do
-      get_html([
-        :x,  nil, nil,
-        nil, nil, nil,
-        nil, nil, nil,
-      ])
-    end
+  it 'shows the first mark of a game' do
+    html = get_html([
+      :x,  nil, nil,
+      nil, nil, nil,
+      nil, nil, nil,
+    ])
+    expect(html.css('[data-board-cell="x"]').length).to eq 1
+  end
 
-    it 'contains the move' do
-      expect(html.css('[data-board-cell="x"]').length).to eq 1
-    end
+  it 'shows the second mark of a game' do
+    html = get_html([
+      :x,  :o, nil,
+      nil, nil, nil,
+      nil, nil, nil,
+    ])
+    expect(html.css('[data-board-cell="o"]').length).to eq 1
+  end
+
+  it 'shows all the marks' do
+    html = get_html([
+      :o, :x, :o,
+      :x, :o, :x,
+      :x, :o, :x,
+    ])
+    expect(html.css('[data-board-cell="x"]').length).to eq 5
+    expect(html.css('[data-board-cell="o"]').length).to eq 4
   end
 end

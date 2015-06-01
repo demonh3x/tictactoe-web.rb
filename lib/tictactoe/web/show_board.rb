@@ -9,14 +9,15 @@ module Tictactoe
         marks = game_gateway[:game].marks
 
         board = '<div data-board></div>'
-        if marks[0] == nil
-          cells = '<div data-board-cell></div>' * 9
-        else
-          cells = '<div data-board-cell="x"></div>'
-          cells += '<div data-board-cell></div>' * 8
+        cells = marks.map do |mark|
+          if mark
+            "<div data-board-cell=\"#{mark.to_s}\"></div>"
+          else
+            "<div data-board-cell></div>"
+          end
         end
 
-        board + cells
+        board + cells.join
       end
 
       private
