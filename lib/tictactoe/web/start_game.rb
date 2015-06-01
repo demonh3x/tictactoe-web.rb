@@ -1,3 +1,5 @@
+require 'tictactoe/game'
+
 module Tictactoe
   module Web
     class HumanPlayer
