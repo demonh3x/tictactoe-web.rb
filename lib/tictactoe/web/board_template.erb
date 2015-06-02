@@ -14,13 +14,13 @@
   <div data-board>
     <% marks.each_with_index.each_slice(3) do |row| %>
       <ul>
-      <% row.each do |mark, index| %>
+      <% row.each do |mark, move| %>
         <li data-board-cell="<%= mark.to_s %>">
           <% if mark %>
             <%= mark.to_s %>
           <% else %>
-            <a href="/game/make_move?move=<%= index.to_s %>">
-              <%= index.to_s %>
+            <a href="/game/make_move?move=<%= move.to_s %>">
+              <%= move.to_s %>
             </a>
           <% end %>
         </li>
