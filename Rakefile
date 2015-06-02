@@ -1,17 +1,14 @@
+require 'rspec/core/rake_task'
+
 task :default => ["spec:develop"]
 
 namespace :spec do
-  require './spec/rake_rspec'
-
-  rspec_task(:unit) do
-    exclude_tags :integration
+  RSpec::Core::RakeTask.new(:develop) do |task|
+    task.verbose = false
   end
 
-  rspec_task(:develop) do
-  end
-
-  rspec_task(:ci) do
-    add_opts "--color -fd"
+  RSpec::Core::RakeTask.new(:ci) do |task|
+    task.rspec_opts = "--color -fd"
   end
 end
 
