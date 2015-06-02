@@ -1,8 +1,12 @@
-require 'rspec/core/rake_task'
+task :default => ["run"]
 
-task :default => ["spec:develop"]
+task :run do
+  `rackup`
+end
 
 namespace :spec do
+  require 'rspec/core/rake_task'
+
   RSpec::Core::RakeTask.new(:develop) do |task|
     task.verbose = false
   end
@@ -10,8 +14,4 @@ namespace :spec do
   RSpec::Core::RakeTask.new(:ci) do |task|
     task.rspec_opts = "--color -fd"
   end
-end
-
-task :run do
-  `rackup`
 end
