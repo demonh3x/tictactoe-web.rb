@@ -41,6 +41,13 @@ describe Tictactoe::Web::App do
         '/game/make_move?move=8'
       ])
     end
+
+    it 'contains a link to restart the game' do
+      anchors = html.css('a')
+      links = anchors.map {|anchor| anchor.attributes['href'].value}
+
+      expect(links).to include('/game/start')
+    end
   end
 
   describe 'when making a move' do
