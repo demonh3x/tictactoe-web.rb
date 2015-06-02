@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/web/start_game'
 
 RSpec.describe Tictactoe::Web::StartGame do
