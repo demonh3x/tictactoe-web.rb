@@ -1,7 +1,7 @@
 module Tictactoe
   module Web
     module Endpoints
-      class Board
+      class ShowBoard
         def initialize(show_board)
           self.show_board = show_board
         end

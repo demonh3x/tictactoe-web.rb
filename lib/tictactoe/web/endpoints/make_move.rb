@@ -1,10 +1,10 @@
 module Tictactoe
   module Web
     module Endpoints
-      class Move
-        def initialize(make_move, next_endpoint)
+      class MakeMove
+        def initialize(make_move, show_board)
           self.make_move = make_move
-          self.next_endpoint = next_endpoint
+          self.show_board = show_board
         end
 
         def route
@@ -19,12 +19,12 @@ module Tictactoe
           make_move.call(move)
 
           response = Rack::Response.new
-          response.redirect(next_endpoint.route)
+          response.redirect(show_board.route)
           response.finish
         end
 
         private
-        attr_accessor :make_move, :next_endpoint
+        attr_accessor :make_move, :show_board
       end
     end
   end

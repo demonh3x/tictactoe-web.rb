@@ -1,10 +1,10 @@
 module Tictactoe
   module Web
     module Endpoints
-      class Start
-        def initialize(start_game, next_endpoint)
+      class StartGame
+        def initialize(start_game, show_board)
           self.start_game = start_game
-          self.next_endpoint = next_endpoint
+          self.show_board = show_board
         end
 
         def route
@@ -15,12 +15,12 @@ module Tictactoe
           start_game.call()
 
           response = Rack::Response.new
-          response.redirect(next_endpoint.route)
+          response.redirect(show_board.route)
           response.finish
         end
 
         private
-        attr_accessor :start_game, :next_endpoint
+        attr_accessor :start_game, :show_board
       end
     end
   end
