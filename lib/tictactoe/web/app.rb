@@ -22,7 +22,9 @@ module Tictactoe
             run ->(environment) do
               template_path = 'lib/tictactoe/web/board_template.erb'
               template = ERB.new(File.new(template_path).read)
+
               board = show_board.call(template)
+
               App.respond(board)
             end
           end
@@ -30,6 +32,7 @@ module Tictactoe
           map '/game/start' do
             run ->(environment) do
               start_game.call()
+
               App.redirect_to('/game/board')
             end
           end
@@ -39,7 +42,9 @@ module Tictactoe
               query = environment['QUERY_STRING']
               arguments = Rack::Utils.parse_nested_query(query)
               move = Integer(arguments['move'])
+
               make_move.call(move)
+
               App.redirect_to('/game/board')
             end
           end
