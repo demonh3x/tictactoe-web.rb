@@ -20,7 +20,9 @@ module Tictactoe
         Rack::Builder.new do
           map '/game/board' do
             run ->(environment) do
-              board = show_board.call()
+              template_path = 'lib/tictactoe/web/board_template.erb'
+              template = ERB.new(File.new(template_path).read)
+              board = show_board.call(template)
               App.respond(board)
             end
           end

@@ -1,0 +1,13 @@
+<div data-board>
+  <% marks.each_with_index do |mark, index| %>
+    <div data-board-cell="<%= mark.to_s %>">
+      <% if mark %>
+        <%= mark.to_s %>
+      <% else %>
+        <a href="/game/make_move?move=<%= index.to_s %>">
+          <%= index.to_s %>
+        </a>
+      <% end %>
+    </div>
+  <% end %>
+</div>

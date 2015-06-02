@@ -7,69 +7,41 @@ RSpec.describe Tictactoe::Web::ShowBoard do
     attr_reader :marks
   end
 
-  def get_html(marks)
-    game = GameStub.new(marks)
-    game_gateway = {:game => game}
-    show_board = described_class.new(game_gateway)
-    Nokogiri::HTML(show_board.call())
+  class TemplateSpy
+    def result(binding)
+      @received_binding = binding
+    end
+
+    attr_reader :received_binding
   end
 
-  describe 'given an empty board' do
-    let(:html) do
-      get_html([
-        nil, nil, nil,
-        nil, nil, nil,
-        nil, nil, nil,
-      ])
+  class TemplateStub
+    def initialize(result)
+      @result = result
     end
 
-    it 'contains a board' do
-      expect(html.css('[data-board]').length).to eq 1
-    end
-
-    it 'contains the board cells' do
-      expect(html.css('[data-board-cell]').length).to eq 9
-    end
-
-    it 'contains the links to the moves' do
-      expect(html.css('a').length).to eq 9
+    def result(binding)
+      @result
     end
   end
 
-  it 'shows the first mark of a game' do
-    html = get_html([
-      :x,  nil, nil,
-      nil, nil, nil,
-      nil, nil, nil,
-    ])
-    expect(html.css('[data-board-cell="x"]').length).to eq 1
+  let(:marks)        { :marks }
+  let(:game)         { GameStub.new(marks) }
+  let(:game_gateway) { {:game => game} }
+  let(:show_board)   { described_class.new(game_gateway) }
+
+  it 'lets the template access the game marks' do
+    template = TemplateSpy.new
+
+    show_board.call(template)
+
+    binding = template.received_binding
+    expect(binding.local_variable_get(:marks)).to equal game.marks
   end
 
-  it 'shows the second mark of a game' do
-    html = get_html([
-      :x,  :o, nil,
-      nil, nil, nil,
-      nil, nil, nil,
-    ])
-    expect(html.css('[data-board-cell="o"]').length).to eq 1
-  end
+  it 'returns the template result' do
+    template = TemplateStub.new(:result)
 
-  it 'shows all the marks' do
-    html = get_html([
-      :o, :x, :o,
-      :x, :o, :x,
-      :x, :o, :x,
-    ])
-    expect(html.css('[data-board-cell="x"]').length).to eq 5
-    expect(html.css('[data-board-cell="o"]').length).to eq 4
-  end
-
-  it 'there are no links when the board is full' do
-    html = get_html([
-      :o, :x, :o,
-      :x, :o, :x,
-      :x, :o, :x,
-    ])
-    expect(html.css('a').length).to eq 0
+    expect(show_board.call(template)).to eq :result
   end
 end

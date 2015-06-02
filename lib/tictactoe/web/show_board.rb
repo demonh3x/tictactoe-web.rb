@@ -5,24 +5,9 @@ module Tictactoe
         self.game_gateway = game_gateway
       end
 
-      def call()
+      def call(board_template)
         marks = game_gateway[:game].marks
-        template = %{
-          <div data-board>
-            <% marks.each_with_index do |mark, index| %>
-            <div data-board-cell="<%= mark.to_s %>">
-              <% if mark %>
-                <%= mark.to_s %>
-              <% else %>
-              <a href="/game/make_move?move=<%= index.to_s %>">
-                <%= index.to_s %>
-              </a>
-              <% end %>
-            </div>
-            <% end %>
-          </div>
-        }
-        ERB.new(template).result(binding)
+        board_template.result(binding)
       end
 
       private
