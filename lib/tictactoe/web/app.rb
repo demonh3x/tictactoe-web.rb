@@ -36,7 +36,7 @@ module Tictactoe
             run ->(environment) do
               query = environment['QUERY_STRING']
               arguments = Rack::Utils.parse_nested_query(query)
-              move = arguments['move'].to_i
+              move = Integer(arguments['move'])
               make_move.call(move)
               App.redirect_to('/game/board')
             end
