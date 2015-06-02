@@ -11,7 +11,7 @@ module Tictactoe
         end
 
         def call(environment)
-          template_path = 'lib/tictactoe/web/board_template.erb'
+          template_path = 'lib/tictactoe/web/templates/board.erb'
           template = ERB.new(File.new(template_path).read)
 
           board = show_board.call(template)
