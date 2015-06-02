@@ -26,7 +26,7 @@ describe Tictactoe::Web::App do
       expect(html.css('[data-board-cell]').length).to eq 9
     end
 
-    it 'contain the links to the moves' do
+    it 'contains the links to the moves' do
       anchors = html.css('[data-board] a')
       links = anchors.map {|anchor| anchor.attributes['href'].value}
       expect(links).to eq([
