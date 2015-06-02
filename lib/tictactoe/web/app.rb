@@ -1,6 +1,10 @@
-require 'tictactoe/web/show_board'
-require 'tictactoe/web/start_game'
-require 'tictactoe/web/make_move'
+require 'tictactoe/use_cases/show_board'
+require 'tictactoe/use_cases/start_game'
+require 'tictactoe/use_cases/make_move'
+
+require 'tictactoe/web/endpoints/show_board'
+require 'tictactoe/web/endpoints/start_game'
+require 'tictactoe/web/endpoints/make_move'
 
 module Tictactoe
   module Web
@@ -8,59 +12,22 @@ module Tictactoe
       def self.new
         game_gateway = {}
 
-        show_board = ShowBoard.new(game_gateway)
-        start_game = StartGame.new(game_gateway)
-        make_move = MakeMove.new(game_gateway)
+        show_board = Endpoints::ShowBoard.new(UseCases::ShowBoard.new(game_gateway))
+        start_game = Endpoints::StartGame.new(UseCases::StartGame.new(game_gateway), show_board)
+        make_move = Endpoints::MakeMove.new(UseCases::MakeMove.new(game_gateway), show_board)
 
-        create_web_app(show_board, start_game, make_move)
+        create_web_app([show_board, start_game, make_move])
       end
 
       private
-      def self.create_web_app(show_board, start_game, make_move)
+      def self.create_web_app(endpoints)
         Rack::Builder.new do
-          map '/game/board' do
-            run ->(environment) do
-              template_path = 'lib/tictactoe/web/board_template.erb'
-              template = ERB.new(File.new(template_path).read)
-
-              board = show_board.call(template)
-
-              App.respond(board)
-            end
-          end
-
-          map '/game/start' do
-            run ->(environment) do
-              start_game.call()
-
-              App.redirect_to('/game/board')
-            end
-          end
-
-          map '/game/make_move' do
-            run ->(environment) do
-              query = environment['QUERY_STRING']
-              arguments = Rack::Utils.parse_nested_query(query)
-              move = Integer(arguments['move'])
-
-              make_move.call(move)
-
-              App.redirect_to('/game/board')
+          endpoints.each do |endpoint|
+            map endpoint.route do
+              run endpoint
             end
           end
         end
-      end
-
-      def self.redirect_to(route)
-        response = Rack::Response.new
-        response.redirect(route)
-        response.finish
-      end
-
-      def self.respond(body)
-        response = Rack::Response.new
-        response.write(body)
-        response.finish
       end
     end
   end

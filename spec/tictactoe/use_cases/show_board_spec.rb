@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'tictactoe/web/show_board'
+require 'tictactoe/use_cases/show_board'
 
-RSpec.describe Tictactoe::Web::ShowBoard do
+RSpec.describe Tictactoe::UseCases::ShowBoard do
   class GameStub
     def initialize(marks)
       @marks = marks

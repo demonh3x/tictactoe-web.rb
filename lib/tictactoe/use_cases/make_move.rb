@@ -1,5 +1,5 @@
 module Tictactoe
-  module Web
+  module UseCases
     class MakeMove
       def initialize(game_gateway)
         self.game_gateway = game_gateway
