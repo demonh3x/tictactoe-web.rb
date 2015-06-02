@@ -1,4 +1,3 @@
-require 'tictactoe/game'
 require 'tictactoe/web/make_move'
 
 RSpec.describe Tictactoe::Web::MakeMove do

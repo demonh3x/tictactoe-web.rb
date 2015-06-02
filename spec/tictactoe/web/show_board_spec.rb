@@ -1,3 +1,5 @@
+require 'tictactoe/web/show_board'
+
 RSpec.describe Tictactoe::Web::ShowBoard do
   class GameStub
     def initialize(marks)
