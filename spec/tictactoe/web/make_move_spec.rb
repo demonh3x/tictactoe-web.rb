@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'tictactoe/web/make_move'
+require 'tictactoe/use_cases/make_move'
 
-RSpec.describe Tictactoe::Web::MakeMove do
+RSpec.describe Tictactoe::UseCases::MakeMove do
   class MovesSpy
     def <<(move)
       @received_move = move

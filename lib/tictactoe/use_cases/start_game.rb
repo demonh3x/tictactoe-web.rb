@@ -1,7 +1,7 @@
 require 'tictactoe/game'
 
 module Tictactoe
-  module Web
+  module UseCases
     class HumanPlayer
       attr_reader :mark
 

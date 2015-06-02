@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'tictactoe/web/start_game'
+require 'tictactoe/use_cases/start_game'
 
-RSpec.describe Tictactoe::Web::StartGame do
+RSpec.describe Tictactoe::UseCases::StartGame do
   class GameSpy
     def initialize(board_size, x_type, o_type)
       @board_size = board_size

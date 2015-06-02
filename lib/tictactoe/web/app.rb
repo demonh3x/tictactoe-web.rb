@@ -1,6 +1,6 @@
-require 'tictactoe/web/show_board'
-require 'tictactoe/web/start_game'
-require 'tictactoe/web/make_move'
+require 'tictactoe/use_cases/show_board'
+require 'tictactoe/use_cases/start_game'
+require 'tictactoe/use_cases/make_move'
 
 require 'tictactoe/web/endpoints/board'
 require 'tictactoe/web/endpoints/start'
@@ -12,9 +12,9 @@ module Tictactoe
       def self.new
         game_gateway = {}
 
-        board = Endpoints::Board.new(ShowBoard.new(game_gateway))
-        start = Endpoints::Start.new(StartGame.new(game_gateway), board)
-        move = Endpoints::Move.new(MakeMove.new(game_gateway), board)
+        board = Endpoints::Board.new(UseCases::ShowBoard.new(game_gateway))
+        start = Endpoints::Start.new(UseCases::StartGame.new(game_gateway), board)
+        move = Endpoints::Move.new(UseCases::MakeMove.new(game_gateway), board)
 
         create_web_app([board, start, move])
       end
