@@ -5,9 +5,8 @@ task :run do
 end
 
 begin
+  require 'rspec/core/rake_task'
   namespace :spec do
-    require 'rspec/core/rake_task'
-
     RSpec::Core::RakeTask.new(:develop) do |task|
       task.verbose = false
     end
