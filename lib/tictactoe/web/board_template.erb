@@ -1,16 +1,36 @@
-<div data-board>
-  <% marks.each_with_index do |mark, index| %>
-    <div data-board-cell="<%= mark.to_s %>">
-      <% if mark %>
-        <%= mark.to_s %>
-      <% else %>
-        <a href="/game/make_move?move=<%= index.to_s %>">
-          <%= index.to_s %>
-        </a>
+<html>
+<head>
+  <style>
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div data-board>
+    <% marks.each_with_index.each_slice(3) do |row| %>
+      <ul>
+      <% row.each do |mark, index| %>
+        <li data-board-cell="<%= mark.to_s %>">
+          <% if mark %>
+            <%= mark.to_s %>
+          <% else %>
+            <a href="/game/make_move?move=<%= index.to_s %>">
+              <%= index.to_s %>
+            </a>
+          <% end %>
+        </li>
       <% end %>
-    </div>
-  <% end %>
-</div>
-<a href="/game/start">
-  Restart game
-</a>
+      </ul>
+    <% end %>
+  </div>
+
+  <a href="/game/start">
+    Restart game
+  </a>
+</body>
+</html>
