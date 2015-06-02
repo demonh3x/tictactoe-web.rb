@@ -1,7 +1,7 @@
 source :rubygems
-gem "tictactoe-core", "~> 0.1.1", path: '../tictactoe-core.rb/'
-gem "json", "~> 1.8.2"
+gem "tictactoe-core", "~> 0.1.1"
+gem "rack", "~> 1.6.1"
 gem "rspec", "~> 3.1.0", :group => :test
-gem "rack-test", :group => :test
-gem "nokogiri", :group => :test
+gem "rack-test", "~> 0.6.3", :group => :test
+gem "nokogiri", "~> 1.6.6", :group => :test
 gem "codeclimate-test-reporter", :group => :test, :require => nil
