@@ -2,65 +2,32 @@ require 'tictactoe/web/show_board'
 require 'tictactoe/web/start_game'
 require 'tictactoe/web/make_move'
 
+require 'tictactoe/web/endpoints/board'
+require 'tictactoe/web/endpoints/start'
+require 'tictactoe/web/endpoints/move'
+
 module Tictactoe
   module Web
     class App
       def self.new
         game_gateway = {}
 
-        show_board = ShowBoard.new(game_gateway)
-        start_game = StartGame.new(game_gateway)
-        make_move = MakeMove.new(game_gateway)
+        board = Endpoints::Board.new(ShowBoard.new(game_gateway))
+        start = Endpoints::Start.new(StartGame.new(game_gateway), board)
+        move = Endpoints::Move.new(MakeMove.new(game_gateway), board)
 
-        create_web_app(show_board, start_game, make_move)
+        create_web_app([board, start, move])
       end
 
       private
-      def self.create_web_app(show_board, start_game, make_move)
+      def self.create_web_app(endpoints)
         Rack::Builder.new do
-          map '/game/board' do
-            run ->(environment) do
-              template_path = 'lib/tictactoe/web/board_template.erb'
-              template = ERB.new(File.new(template_path).read)
-
-              board = show_board.call(template)
-
-              App.respond(board)
-            end
-          end
-
-          map '/game/start' do
-            run ->(environment) do
-              start_game.call()
-
-              App.redirect_to('/game/board')
-            end
-          end
-
-          map '/game/make_move' do
-            run ->(environment) do
-              query = environment['QUERY_STRING']
-              arguments = Rack::Utils.parse_nested_query(query)
-              move = Integer(arguments['move'])
-
-              make_move.call(move)
-
-              App.redirect_to('/game/board')
+          endpoints.each do |endpoint|
+            map endpoint.route do
+              run endpoint
             end
           end
         end
-      end
-
-      def self.redirect_to(route)
-        response = Rack::Response.new
-        response.redirect(route)
-        response.finish
-      end
-
-      def self.respond(body)
-        response = Rack::Response.new
-        response.write(body)
-        response.finish
       end
     end
   end
