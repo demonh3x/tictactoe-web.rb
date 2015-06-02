@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - "2.2.0"
+  - "2.1.0"
+  - "2.0.0-p598"
+script: "rake spec:ci"
+addons:
+  code_climate:
+      repo_token: e2c651a228715610f8cf1e072f0c3d8a09e873cf86b5616baf1a928f3d715225
