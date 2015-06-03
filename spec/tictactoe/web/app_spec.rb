@@ -51,6 +51,24 @@ describe Tictactoe::Web::App do
     end
   end
 
+  describe 'when starting a game with board size 4' do
+    before(:each) do
+      get '/game/start?board_size=4'
+      follow_redirect!
+    end
+
+    it 'contains a link to restart the game with board 4' do
+      anchors = html.css('a')
+      links = anchors.map {|anchor| anchor.attributes['href'].value}
+
+      expect(links).to include('/game/start?board_size=4')
+    end
+
+    it 'contains the board cells' do
+      expect(html.css('[data-board-cell]').length).to eq 16
+    end
+  end
+
   describe 'when making a move' do
     before(:each) do
       get '/game/start?board_size=3'
