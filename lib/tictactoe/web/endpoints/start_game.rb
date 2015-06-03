@@ -12,7 +12,11 @@ module Tictactoe
         end
 
         def call(environment)
-          start_game.call()
+          query = environment['QUERY_STRING']
+          arguments = Rack::Utils.parse_nested_query(query)
+          board_size = Integer(arguments['board_size'])
+
+          start_game.call(board_size)
 
           response = Rack::Response.new
           response.redirect(show_board.route)
