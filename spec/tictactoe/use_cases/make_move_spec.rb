@@ -20,10 +20,10 @@ RSpec.describe Tictactoe::UseCases::MakeMove do
     end
   end
 
-  let(:moves)        { MovesSpy.new }
-  let(:game)         { GameTickSpy.new }
-  let(:game_gateway) { {:game => game, :moves => moves} }
-  let(:make_move)    { described_class.new(game_gateway) }
+  let(:moves)           { MovesSpy.new }
+  let(:game)            { GameTickSpy.new }
+  let(:game_repository) { {:game => game, :moves => moves} }
+  let(:make_move)       { described_class.new(game_repository) }
 
   it 'sends the move to game' do
     make_move.call(4)

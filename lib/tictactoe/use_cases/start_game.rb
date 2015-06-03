@@ -16,8 +16,8 @@ module Tictactoe
     end
 
     class StartGame
-      def initialize(game_gateway, game_class = Tictactoe::Game)
-        self.game_gateway = game_gateway
+      def initialize(game_repository, game_class = Tictactoe::Game)
+        self.game_repository = game_repository
         self.game_class = game_class
       end
 
@@ -26,12 +26,12 @@ module Tictactoe
         moves = []
         human_factory = ->(mark) {HumanPlayer.new(mark, moves)}
         game.register_human_factory(human_factory)
-        game_gateway[:game] = game
-        game_gateway[:moves] = moves
+        game_repository[:game] = game
+        game_repository[:moves] = moves
       end
 
       private
-      attr_accessor :game_class, :game_gateway
+      attr_accessor :game_class, :game_repository
     end
   end
 end

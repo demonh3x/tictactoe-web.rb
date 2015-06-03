@@ -17,39 +17,39 @@ RSpec.describe Tictactoe::UseCases::StartGame do
   end
 
   let(:game_class)   { GameSpy }
-  let(:game_gateway) { {} }
-  let(:start_game)   { described_class.new(game_gateway, game_class) }
+  let(:game_repository) { {} }
+  let(:start_game)   { described_class.new(game_repository, game_class) }
 
   it 'creates a game' do
     start_game.call(3)
-    expect(game_gateway[:game]).to be_an_instance_of game_class
+    expect(game_repository[:game]).to be_an_instance_of game_class
   end
 
   it 'creates the game with the 3x3 board' do
     start_game.call(3)
-    expect(game_gateway[:game].board_size).to eq 3
+    expect(game_repository[:game].board_size).to eq 3
   end
 
   it 'creates the game with the 4x4 board' do
     start_game.call(4)
-    expect(game_gateway[:game].board_size).to eq 4
+    expect(game_repository[:game].board_size).to eq 4
   end
 
   it 'creates the game with human vs human' do
     start_game.call(3)
-    expect(game_gateway[:game].x_type).to eq :human
-    expect(game_gateway[:game].o_type).to eq :human
+    expect(game_repository[:game].x_type).to eq :human
+    expect(game_repository[:game].o_type).to eq :human
   end
 
   it 'adds a human factory' do
     start_game.call(3)
-    expect(game_gateway[:game].human_factory).not_to be_nil
+    expect(game_repository[:game].human_factory).not_to be_nil
   end
 
   it 'the moves are wired to the human players' do
     start_game.call(3)
-    game_gateway[:moves] << 5
-    human = game_gateway[:game].human_factory.call(:x)
+    game_repository[:moves] << 5
+    human = game_repository[:game].human_factory.call(:x)
     move = human.get_move(:ignored_state)
     expect(move).to eq 5
   end

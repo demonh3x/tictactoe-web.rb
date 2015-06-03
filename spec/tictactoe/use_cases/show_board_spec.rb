@@ -28,10 +28,10 @@ RSpec.describe Tictactoe::UseCases::ShowBoard do
     end
   end
 
-  let(:marks)        { :marks }
-  let(:game)         { GameStub.new(marks) }
-  let(:game_gateway) { {:game => game} }
-  let(:show_board)   { described_class.new(game_gateway) }
+  let(:marks)           { :marks }
+  let(:game)            { GameStub.new(marks) }
+  let(:game_repository) { {:game => game} }
+  let(:show_board)      { described_class.new(game_repository) }
 
   it 'lets the template access the game marks' do
     template = TemplateSpy.new
