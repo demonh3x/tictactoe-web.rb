@@ -9,9 +9,9 @@ describe Tictactoe::Web::App do
   let(:app)  { Rack::Builder.parse_file('config.ru').first }
   let(:html) { Nokogiri::HTML(last_response.body) }
 
-  describe 'when starting a game' do
+  describe 'when starting a game with board size 3' do
     before(:each) do
-      get '/game/start'
+      get '/game/start?board_size=3'
       follow_redirect!
     end
 
@@ -47,13 +47,13 @@ describe Tictactoe::Web::App do
       anchors = html.css('a')
       links = anchors.map {|anchor| anchor.attributes['href'].value}
 
-      expect(links).to include('/game/start')
+      expect(links).to include('/game/start?board_size=3')
     end
   end
 
   describe 'when making a move' do
     before(:each) do
-      get '/game/start'
+      get '/game/start?board_size=3'
       get '/game/make_move', params={:move => 0}
       follow_redirect!
     end
@@ -70,6 +70,17 @@ describe Tictactoe::Web::App do
       anchors = html.css('[data-board] a')
       links = anchors.map {|anchor| anchor.attributes['href'].value}
       expect(links).not_to include('/game/make_move?move=0')
+    end
+  end
+
+  describe 'when starting a game with board size 4' do
+    before(:each) do
+      get '/game/start?board_size=4'
+      follow_redirect!
+    end
+
+    it 'contains the board cells' do
+      expect(html.css('[data-board-cell]').length).to eq 16
     end
   end
 end
