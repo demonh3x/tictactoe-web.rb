@@ -20,32 +20,36 @@ RSpec.describe Tictactoe::UseCases::StartGame do
   let(:game_gateway) { {} }
   let(:start_game)   { described_class.new(game_gateway, game_class) }
 
-  before(:each) do
-    start_game.call()
-    @game = game_gateway[:game]
-    @moves = game_gateway[:moves]
-  end
-
   it 'creates a game' do
-    expect(@game).to be_an_instance_of game_class
+    start_game.call(3)
+    expect(game_gateway[:game]).to be_an_instance_of game_class
   end
 
   it 'creates the game with the 3x3 board' do
-    expect(@game.board_size).to eq 3
+    start_game.call(3)
+    expect(game_gateway[:game].board_size).to eq 3
+  end
+
+  it 'creates the game with the 4x4 board' do
+    start_game.call(4)
+    expect(game_gateway[:game].board_size).to eq 4
   end
 
   it 'creates the game with human vs human' do
-    expect(@game.x_type).to eq :human
-    expect(@game.o_type).to eq :human
+    start_game.call(3)
+    expect(game_gateway[:game].x_type).to eq :human
+    expect(game_gateway[:game].o_type).to eq :human
   end
 
   it 'adds a human factory' do
-    expect(@game.human_factory).not_to be_nil
+    start_game.call(3)
+    expect(game_gateway[:game].human_factory).not_to be_nil
   end
 
   it 'the moves are wired to the human players' do
-    @moves << 5
-    human = @game.human_factory.call(:x)
+    start_game.call(3)
+    game_gateway[:moves] << 5
+    human = game_gateway[:game].human_factory.call(:x)
     move = human.get_move(:ignored_state)
     expect(move).to eq 5
   end

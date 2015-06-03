@@ -12,7 +12,8 @@
 </head>
 <body>
   <div data-board>
-    <% marks.each_with_index.each_slice(3) do |row| %>
+    <% side_size = Math.sqrt(marks.length).to_i %>
+    <% marks.each_with_index.each_slice(side_size) do |row| %>
       <ul>
       <% row.each do |mark, move| %>
         <li data-board-cell="<%= mark.to_s %>">
@@ -29,7 +30,7 @@
     <% end %>
   </div>
 
-  <a href="/game/start">
+  <a href="/game/start?board_size=<%= side_size %>">
     Restart game
   </a>
 </body>

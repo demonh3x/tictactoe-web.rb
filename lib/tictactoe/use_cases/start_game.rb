@@ -21,8 +21,8 @@ module Tictactoe
         self.game_class = game_class
       end
 
-      def call()
-        game = game_class.new(3, :human, :human)
+      def call(board_size)
+        game = game_class.new(board_size, :human, :human)
         moves = []
         human_factory = ->(mark) {HumanPlayer.new(mark, moves)}
         game.register_human_factory(human_factory)
