@@ -38,8 +38,12 @@ RSpec.describe Tictactoe::UseCases::ShowBoard do
 
     show_board.call(template)
 
+    expect(marks_sent_to(template)).to equal game.marks
+  end
+
+  def marks_sent_to(template)
     binding = template.received_binding
-    expect(binding.eval('marks')).to equal game.marks
+    binding.eval('marks')
   end
 
   it 'returns the template result' do
