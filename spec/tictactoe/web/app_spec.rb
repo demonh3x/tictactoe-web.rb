@@ -6,8 +6,13 @@ require 'nokogiri'
 describe Tictactoe::Web::App do
   include Rack::Test::Methods
 
-  let(:app)  { Rack::Builder.parse_file('config.ru').first }
-  let(:html) { Nokogiri::HTML(last_response.body) }
+  let(:app)        { Rack::Builder.parse_file('config.ru').first }
+  let(:html)       { Nokogiri::HTML(last_response.body) }
+  let(:boards)     { html.css('[data-board]') }
+  let(:cells)      { html.css('[data-board-cell]') }
+  let(:x_cells)    { html.css('[data-board-cell="x"]') }
+  let(:links)      { html.css('a').map {|anchor| anchor.attributes['href'].value} }
+  let(:cell_links) { html.css('[data-board-cell] a').map {|anchor| anchor.attributes['href'].value} }
 
   describe 'when starting a game with board size 3' do
     before(:each) do
@@ -20,17 +25,15 @@ describe Tictactoe::Web::App do
     end
 
     it 'contains a board' do
-      expect(html.css('[data-board]').length).to eq 1
+      expect(boards.length).to eq 1
     end
 
     it 'contains the board cells' do
-      expect(html.css('[data-board-cell]').length).to eq 9
+      expect(cells.length).to eq 9
     end
 
     it 'contains the links to the moves' do
-      anchors = html.css('[data-board] a')
-      links = anchors.map {|anchor| anchor.attributes['href'].value}
-      expect(links).to eq([
+      expect(cell_links).to eq([
         '/game/make_move?move=0',
         '/game/make_move?move=1',
         '/game/make_move?move=2',
@@ -44,9 +47,6 @@ describe Tictactoe::Web::App do
     end
 
     it 'contains a link to restart the game' do
-      anchors = html.css('a')
-      links = anchors.map {|anchor| anchor.attributes['href'].value}
-
       expect(links).to include('/game/start?board_size=3')
     end
   end
@@ -58,14 +58,11 @@ describe Tictactoe::Web::App do
     end
 
     it 'contains a link to restart the game with board 4' do
-      anchors = html.css('a')
-      links = anchors.map {|anchor| anchor.attributes['href'].value}
-
       expect(links).to include('/game/start?board_size=4')
     end
 
     it 'contains the board cells' do
-      expect(html.css('[data-board-cell]').length).to eq 16
+      expect(cells.length).to eq 16
     end
   end
 
@@ -81,13 +78,11 @@ describe Tictactoe::Web::App do
     end
 
     it 'shows the move' do
-      expect(html.css('[data-board-cell="x"]').length).to eq 1
+      expect(x_cells.length).to eq 1
     end
 
     it 'does not contain the link to the move made' do
-      anchors = html.css('[data-board] a')
-      links = anchors.map {|anchor| anchor.attributes['href'].value}
-      expect(links).not_to include('/game/make_move?move=0')
+      expect(cell_links).not_to include('/game/make_move?move=0')
     end
   end
 
@@ -98,7 +93,21 @@ describe Tictactoe::Web::App do
     end
 
     it 'contains the board cells' do
-      expect(html.css('[data-board-cell]').length).to eq 16
+      expect(cells.length).to eq 16
+    end
+  end
+
+  describe 'the menu' do
+    before(:each) do
+      get '/'
+    end
+
+    it 'contains a link to start a game with board size 3' do
+      expect(links).to include('/game/start?board_size=3')
+    end
+
+    it 'contains a link to start a game with board size 4' do
+      expect(links).to include('/game/start?board_size=4')
     end
   end
 end
