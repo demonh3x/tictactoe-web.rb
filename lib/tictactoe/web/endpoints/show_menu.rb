@@ -1,15 +1,17 @@
 module Tictactoe
   module Web
     module Endpoints
-      class Menu
+      class ShowMenu
         def route
           '/'
         end
 
         def call(environment)
           template_path = 'lib/tictactoe/web/templates/menu.erb'
-          body = File.new(template_path).read
-          Rack::Response.new(body)
+          body = ERB.new(File.new(template_path).read).result(binding)
+
+          response = Rack::Response.new(body)
+          response.finish
         end
       end
     end
