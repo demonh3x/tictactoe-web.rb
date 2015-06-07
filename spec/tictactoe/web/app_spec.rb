@@ -86,17 +86,6 @@ describe Tictactoe::Web::App do
     end
   end
 
-  describe 'when starting a game with board size 4' do
-    before(:each) do
-      get '/game/start?board_size=4'
-      follow_redirect!
-    end
-
-    it 'contains the board cells' do
-      expect(cells.length).to eq 16
-    end
-  end
-
   describe 'the menu' do
     before(:each) do
       get '/'
