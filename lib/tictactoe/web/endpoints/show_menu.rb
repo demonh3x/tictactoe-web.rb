@@ -1,3 +1,5 @@
+require 'tictactoe/web/responses/success'
+
 module Tictactoe
   module Web
     module Endpoints
@@ -8,10 +10,9 @@ module Tictactoe
 
         def call(environment)
           template_path = 'lib/tictactoe/web/templates/menu.erb'
-          body = ERB.new(File.new(template_path).read).result(binding)
+          body = ERB.new(File.new(template_path).read).result
 
-          response = Rack::Response.new(body)
-          response.finish
+          Responses::Success.new(body)
         end
       end
     end
