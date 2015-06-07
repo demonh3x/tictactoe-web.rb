@@ -16,7 +16,7 @@ RSpec.describe Tictactoe::Web::Endpoints::StartGame do
   end
 
   module Stub
-    class ShowBoardEndpoint
+    class Endpoint
       def initialize(route)
         @route = route
       end
@@ -26,7 +26,7 @@ RSpec.describe Tictactoe::Web::Endpoints::StartGame do
   end
 
   let(:use_case)    { Spy::StartGameUseCase.new }
-  let(:show_board)  { Stub::ShowBoardEndpoint.new('/game/board') }
+  let(:show_board)  { Stub::Endpoint.new('/game/board') }
   let(:app)         { described_class.new(use_case, show_board) }
 
   it 'is mapped to the /game/start route' do
@@ -46,27 +46,23 @@ RSpec.describe Tictactoe::Web::Endpoints::StartGame do
 
   it 'responds bad request when the board size is missing' do
     get '/game/start'
-    expect_bad_request(last_response)
+    expect(last_response.status).to eq 400
   end
 
   describe 'responds bad request when the board size is not valid, for example:' do
     it 'non-integer' do
       get '/game/start?board_size=a'
-      expect_bad_request(last_response)
+      expect(last_response.status).to eq 400
     end
 
     it 'less than the minimum size' do
       get '/game/start?board_size=2'
-      expect_bad_request(last_response)
+      expect(last_response.status).to eq 400
     end
 
     it 'more than the maximum size' do
       get '/game/start?board_size=5'
-      expect_bad_request(last_response)
+      expect(last_response.status).to eq 400
     end
-  end
-
-  def expect_bad_request(response)
-    expect(response.status).to eq 400
   end
 end
