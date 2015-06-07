@@ -1,3 +1,5 @@
+require 'tictactoe/web/responses/success'
+
 module Tictactoe
   module Web
     module Endpoints
@@ -16,7 +18,7 @@ module Tictactoe
 
           board = show_board.call(template)
 
-          Rack::Response.new(board).finish
+          Responses::Success.new(board)
         end
 
         private
