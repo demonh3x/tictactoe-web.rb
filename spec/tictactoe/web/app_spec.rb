@@ -86,6 +86,24 @@ describe Tictactoe::Web::App do
     end
   end
 
+  describe 'when x wins the game' do
+    def make_moves(*moves)
+      moves.each do |move|
+        get '/game/make_move', params={:move => move}
+        follow_redirect!
+      end
+    end
+
+    before(:each) do
+      get '/game/start?board_size=3'
+      make_moves(0, 1, 3, 4, 6)
+    end
+
+    it 'does not contain links to make moves' do
+      expect(cell_links).to eq([])
+    end
+  end
+
   describe 'the menu' do
     before(:each) do
       get '/'

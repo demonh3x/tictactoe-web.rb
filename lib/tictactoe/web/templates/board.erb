@@ -1,3 +1,9 @@
+<%
+marks = game_state.marks
+is_finished = game_state.is_finished?
+
+side_size = Math.sqrt(marks.length).to_i
+%>
 <html>
 <head>
   <style>
@@ -12,14 +18,14 @@
 </head>
 <body>
   <div data-board>
-    <% marks = game_state.marks %>
-    <% side_size = Math.sqrt(marks.length).to_i %>
     <% marks.each_with_index.each_slice(side_size) do |row| %>
       <ul>
       <% row.each do |mark, move| %>
         <li data-board-cell="<%= mark.to_s %>">
           <% if mark %>
             <%= mark.to_s %>
+          <% elsif is_finished %>
+            _
           <% else %>
             <a href="/game/make_move?move=<%= move.to_s %>">
               <%= move.to_s %>
