@@ -13,12 +13,12 @@ module Tictactoe
         end
 
         def call(environment)
+          board = show_board.call
+
           template_path = 'lib/tictactoe/web/templates/board.erb'
           template = ERB.new(File.new(template_path).read)
-
-          board = show_board.call(template)
-
-          Responses::Success.new(board)
+          body = template.result(binding)
+          Responses::Success.new(body)
         end
 
         private

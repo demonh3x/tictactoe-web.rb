@@ -5,9 +5,8 @@ module Tictactoe
         self.game_repository = game_repository
       end
 
-      def call(board_template)
-        game_state = game.state
-        board_template.result(binding)
+      def call
+        game.state
       end
 
       private
