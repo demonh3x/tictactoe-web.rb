@@ -12,6 +12,7 @@
 </head>
 <body>
   <div data-board>
+    <% marks = game_state.marks %>
     <% side_size = Math.sqrt(marks.length).to_i %>
     <% marks.each_with_index.each_slice(side_size) do |row| %>
       <ul>

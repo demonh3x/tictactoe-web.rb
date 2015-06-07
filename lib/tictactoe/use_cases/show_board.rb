@@ -6,12 +6,16 @@ module Tictactoe
       end
 
       def call(board_template)
-        marks = game_repository[:game].marks
+        game_state = game.state
         board_template.result(binding)
       end
 
       private
       attr_accessor :game_repository
+
+      def game
+        game_repository[:game]
+      end
     end
   end
 end
