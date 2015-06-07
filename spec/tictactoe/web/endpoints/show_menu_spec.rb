@@ -1,24 +1,20 @@
 require 'spec_helper'
-require 'testable_rack_response'
+require 'rack/test'
 require 'tictactoe/web/endpoints/show_menu'
 
 RSpec.describe Tictactoe::Web::Endpoints::ShowMenu do
-  let(:menu)         { described_class.new }
+  include Rack::Test::Methods
+
+  let(:app)          { described_class.new }
   let(:environment)  { {} }
-  let(:response)     { TestableRackResponse.new(menu.call(environment)) }
+  let(:response)     { get '/'; last_response }
 
   it 'is mapped to the root route' do
-    expect(menu.route).to eq '/'
+    expect(app.route).to eq '/'
   end
 
   it 'responds successfully' do
     expect(response.status).to eq 200
-  end
-
-  it 'responds with the appropriate headers' do
-    expect(response.headers).to eq({
-      "Content-Length" => response.body.length.to_s
-    })
   end
 
   it 'contains the links for the board size options' do
