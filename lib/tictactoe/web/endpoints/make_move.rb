@@ -1,3 +1,5 @@
+require 'tictactoe/web/responses/redirect'
+
 module Tictactoe
   module Web
     module Endpoints
@@ -12,19 +14,37 @@ module Tictactoe
         end
 
         def call(environment)
-          query = environment['QUERY_STRING']
-          arguments = Rack::Utils.parse_nested_query(query)
-          move = Integer(arguments['move'])
+          arguments = Arguments.new(environment)
+          return Responses::InvalidArguments.new unless arguments.are_valid?
 
-          make_move.call(move)
-
-          response = Rack::Response.new
-          response.redirect(show_board.route)
-          response.finish
+          make_move.call(arguments.move)
+          Responses::Redirect.new(show_board.route)
         end
 
         private
         attr_accessor :make_move, :show_board
+
+        class Arguments
+          def initialize(environment)
+            self.environment = environment
+          end
+
+          def are_valid?
+            move rescue false
+          end
+
+          def move
+            Integer(query['move'])
+          end
+
+          private
+          attr_accessor :environment
+
+          def query
+            query_string = environment['QUERY_STRING']
+            Rack::Utils.parse_nested_query(query_string)
+          end
+        end
       end
     end
   end
