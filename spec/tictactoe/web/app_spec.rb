@@ -49,6 +49,10 @@ describe Tictactoe::Web::App do
     it 'contains a link to restart the game' do
       expect(links).to include('/game/start?board_size=3')
     end
+
+    it 'does not show the winner' do
+      expect(html.css('[data-winner]').length).to eq 0
+    end
   end
 
   describe 'when starting a game with board size 4' do
@@ -101,6 +105,10 @@ describe Tictactoe::Web::App do
 
     it 'does not contain links to make moves' do
       expect(cell_links).to eq([])
+    end
+
+    it 'shows the winner' do
+      expect(html.css('[data-winner="x"]').length).to eq 1
     end
   end
 

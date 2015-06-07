@@ -1,6 +1,7 @@
 <%
 marks = game_state.marks
 is_finished = game_state.is_finished?
+winner = game_state.winner
 
 side_size = Math.sqrt(marks.length).to_i
 %>
@@ -36,6 +37,12 @@ side_size = Math.sqrt(marks.length).to_i
       </ul>
     <% end %>
   </div>
+
+  <% if is_finished %>
+    <div data-winner="<%= winner.to_s %>">
+      <%= winner.nil?? "It is a draw!" : "Player #{winner.to_s.upcase} has won!" %>
+    </div>
+  <% end %>
 
   <a href="/game/start?board_size=<%= side_size %>">
     Restart game
