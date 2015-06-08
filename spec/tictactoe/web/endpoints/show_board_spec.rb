@@ -145,4 +145,38 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
       expect(html.css('[data-winner="x"]').length).to eq 1
     end
   end
+
+  describe 'given a 3x3 board with o as the winner' do
+    before(:each) do
+      use_case.board = Stub::Board.new(
+        [:x,  :o,  :x,
+         :x,  :o,  nil,
+         nil, :o,  nil],
+         true,
+         :o
+      )
+    end
+
+    it 'shows the winner' do
+      expect(html.css('[data-winner="o"]').length).to eq 1
+    end
+  end
+
+  describe 'given a 3x3 board with a draw' do
+    before(:each) do
+      use_case.board = Stub::Board.new(
+        [:x,  :o,  :x,
+         :x,  :o,  :o,
+         :o,  :x,  :x],
+         true,
+         nil
+      )
+    end
+
+    it 'shows no winner' do
+      expect(html.css('[data-winner="o"]').length).to eq 0
+      expect(html.css('[data-winner="x"]').length).to eq 0
+      expect(html.css('[data-winner]').length).to eq 1
+    end
+  end
 end
