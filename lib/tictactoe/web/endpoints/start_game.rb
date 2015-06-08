@@ -16,7 +16,7 @@ module Tictactoe
 
         def call(environment)
           arguments = Arguments.new(environment)
-          return Responses::InvalidArguments.new unless arguments.are_valid?
+          return Responses::InvalidArguments.new unless arguments.valid?
 
           start_game.call(arguments.board_size)
           Responses::Redirect.new(show_board.route)
@@ -30,7 +30,7 @@ module Tictactoe
             self.environment = environment
           end
 
-          def are_valid?
+          def valid?
             [3, 4].include? board_size rescue false
           end
 

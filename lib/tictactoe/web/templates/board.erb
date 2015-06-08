@@ -1,6 +1,6 @@
 <%
 marks = board.marks
-is_finished = board.is_finished?
+finished = board.is_finished?
 winner = board.winner
 
 side_size = Math.sqrt(marks.length).to_i
@@ -26,7 +26,7 @@ side_size = Math.sqrt(marks.length).to_i
         <li data-board-cell="<%= mark.to_s %>">
           <% if mark %>
             <%= mark.to_s %>
-          <% elsif is_finished %>
+          <% elsif finished %>
             _
           <% else %>
             <a href="/game/make_move?move=<%= move.to_s %>">
@@ -39,7 +39,7 @@ side_size = Math.sqrt(marks.length).to_i
     <% end %>
   </div>
 
-  <% if is_finished %>
+  <% if finished %>
     <div data-winner="<%= winner.to_s %>">
       <%= winner.nil?? "It is a draw!" : "Player #{winner.to_s.upcase} has won!" %>
     </div>

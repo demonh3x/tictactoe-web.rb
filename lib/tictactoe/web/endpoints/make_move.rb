@@ -15,7 +15,7 @@ module Tictactoe
 
         def call(environment)
           arguments = Arguments.new(environment)
-          return Responses::InvalidArguments.new unless arguments.are_valid?
+          return Responses::InvalidArguments.new unless arguments.valid?
 
           make_move.call(arguments.move)
           Responses::Redirect.new(show_board.route)
@@ -29,7 +29,7 @@ module Tictactoe
             self.environment = environment
           end
 
-          def are_valid?
+          def valid?
             move rescue false
           end
 
