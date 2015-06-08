@@ -4,12 +4,15 @@ module Tictactoe
   module Web
     module Endpoints
       class ShowBoard
+        ROUTE = '/game/board'
+        TEMPLATE_PATH = 'lib/tictactoe/web/templates/board.erb'
+
         def initialize(show_board)
           self.show_board = show_board
         end
 
         def route
-          '/game/board'
+          ROUTE
         end
 
         def call(environment)
@@ -24,8 +27,7 @@ module Tictactoe
 
         class Template
           def render(board)
-            template_path = 'lib/tictactoe/web/templates/board.erb'
-            template = ERB.new(File.new(template_path).read)
+            template = ERB.new(File.new(TEMPLATE_PATH).read)
             template.result(binding)
           end
         end
