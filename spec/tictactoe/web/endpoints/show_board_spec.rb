@@ -1,26 +1,13 @@
 require 'spec_helper'
 require 'rack/test'
 require 'nokogiri'
+require 'state_stub'
 require 'tictactoe/web/endpoints/show_board'
 
 RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
   include Rack::Test::Methods
 
   module Stub
-    class Board
-      def initialize(marks, is_finished, winner)
-        @marks = marks
-        @is_finished = is_finished
-        @winner = winner
-      end
-
-      def is_finished?
-        @is_finished
-      end
-
-      attr_reader :marks, :winner
-    end
-
     class ShowBoard
       attr_accessor :board
 
@@ -45,7 +32,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 initial board' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [nil, nil, nil,
          nil, nil, nil,
          nil, nil, nil],
@@ -87,7 +74,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 4x4 initial board' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [nil, nil, nil, nil,
          nil, nil, nil, nil,
          nil, nil, nil, nil,
@@ -108,7 +95,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with one move' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [:x,  nil, nil,
          nil, nil, nil,
          nil, nil, nil],
@@ -128,7 +115,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with x as the winner' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [:x,  :o,  nil,
          :x,  :o,  nil,
          :x,  nil, nil],
@@ -148,7 +135,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with o as the winner' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [:x,  :o,  :x,
          :x,  :o,  nil,
          nil, :o,  nil],
@@ -164,7 +151,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with a draw' do
     before(:each) do
-      use_case.board = Stub::Board.new(
+      use_case.board = StateStub.new(
         [:x,  :o,  :x,
          :x,  :o,  :o,
          :o,  :x,  :x],
