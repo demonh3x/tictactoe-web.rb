@@ -1,4 +1,5 @@
 require 'tictactoe/web/responses/success'
+require 'tictactoe/web/board_presenter'
 
 module Tictactoe
   module Web
@@ -9,6 +10,7 @@ module Tictactoe
 
         def initialize(show_board)
           self.show_board = show_board
+          self.template = Template.new
         end
 
         def route
@@ -18,12 +20,15 @@ module Tictactoe
         def call(environment)
           board = show_board.call
 
-          body = Template.new.render(board)
-          Responses::Success.new(body)
+          presenter = BoardPresenter.new(board)
+          body = template.render(presenter)
+          response = Responses::Success.new(body)
+
+          response
         end
 
         private
-        attr_accessor :show_board
+        attr_accessor :show_board, :template
 
         class Template
           def render(board)

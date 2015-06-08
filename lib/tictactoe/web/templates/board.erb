@@ -1,10 +1,3 @@
-<%
-marks = board.marks
-finished = board.is_finished?
-winner = board.winner
-
-side_size = Math.sqrt(marks.length).to_i
-%>
 <html>
 <head>
   <style>
@@ -20,18 +13,14 @@ side_size = Math.sqrt(marks.length).to_i
 </head>
 <body>
   <div data-board>
-    <% marks.each_with_index.each_slice(side_size) do |row| %>
+    <% board.cells.each do |row| %>
       <ul>
-      <% row.each do |mark, move| %>
-        <li data-board-cell="<%= mark.to_s %>">
-          <% if mark %>
-            <%= mark.to_s %>
-          <% elsif finished %>
-            _
+      <% row.each do |mark, link| %>
+        <li data-board-cell="<%= mark %>">
+          <% if link %>
+            <a href="<%= link %>"><%= mark %></a>
           <% else %>
-            <a href="/game/make_move?move=<%= move.to_s %>">
-              <%= move.to_s %>
-            </a>
+            <%= mark %>
           <% end %>
         </li>
       <% end %>
@@ -39,18 +28,13 @@ side_size = Math.sqrt(marks.length).to_i
     <% end %>
   </div>
 
-  <% if finished %>
-    <div data-winner="<%= winner.to_s %>">
-      <%= winner.nil?? "It is a draw!" : "Player #{winner.to_s.upcase} has won!" %>
+  <% if board.result_message %>
+    <div data-winner="<%= board.winner %>">
+      <%= board.result_message %>
     </div>
   <% end %>
 
-  <a href="/game/start?board_size=<%= side_size %>">
-    Restart game
-  </a>
-
-  <a href="/">
-    Menu
-  </a>
+  <a href="<%= board.restart_link %>">Restart game</a>
+  <a href="<%= board.menu_link %>">Menu</a>
 </body>
 </html>
