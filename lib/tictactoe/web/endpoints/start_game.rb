@@ -5,13 +5,15 @@ module Tictactoe
   module Web
     module Endpoints
       class StartGame
+        ROUTE = '/game/start'
+
         def initialize(start_game, show_board)
           self.start_game = start_game
           self.show_board = show_board
         end
 
         def route
-          '/game/start'
+          ROUTE
         end
 
         def call(environment)

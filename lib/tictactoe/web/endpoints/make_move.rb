@@ -4,13 +4,15 @@ module Tictactoe
   module Web
     module Endpoints
       class MakeMove
+        ROUTE = '/game/make_move'
+
         def initialize(make_move, show_board)
           self.make_move = make_move
           self.show_board = show_board
         end
 
         def route
-          '/game/make_move'
+          ROUTE
         end
 
         def call(environment)

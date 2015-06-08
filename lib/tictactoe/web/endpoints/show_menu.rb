@@ -4,8 +4,11 @@ module Tictactoe
   module Web
     module Endpoints
       class ShowMenu
+        ROUTE = '/'
+        TEMPLATE_PATH = 'lib/tictactoe/web/templates/menu.erb'
+
         def route
-          '/'
+          ROUTE
         end
 
         def call(environment)
@@ -16,8 +19,7 @@ module Tictactoe
         private
         class Template
           def render
-            template_path = 'lib/tictactoe/web/templates/menu.erb'
-            ERB.new(File.new(template_path).read).result
+            ERB.new(File.new(TEMPLATE_PATH).read).result
           end
         end
       end
