@@ -28,7 +28,7 @@ module Tictactoe
           show_board
         )
         menu = Endpoints::ShowMenu.new(
-          Templates::ErbTemplate.new(:board)
+          Templates::ErbTemplate.new(:menu)
         )
 
         create_web_app([menu, show_board, start_game, make_move])
