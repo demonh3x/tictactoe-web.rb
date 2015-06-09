@@ -1,27 +1,27 @@
 require 'tictactoe/web/responses/success'
+require 'tictactoe/web/templates/erb_template'
 
 module Tictactoe
   module Web
     module Endpoints
       class ShowMenu
         ROUTE = '/'
-        TEMPLATE_PATH = 'lib/tictactoe/web/templates/menu.erb'
+
+        def initialize
+          self.template = Templates::ErbTemplate.new(:menu)
+        end
 
         def route
           ROUTE
         end
 
         def call(environment)
-          body = Template.new.render
+          body = template.render
           Responses::Success.new(body)
         end
 
         private
-        class Template
-          def render
-            ERB.new(File.new(TEMPLATE_PATH).read).result
-          end
-        end
+        attr_accessor :template
       end
     end
   end
