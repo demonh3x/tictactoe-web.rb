@@ -13,7 +13,7 @@
 </head>
 <body>
   <div data-board>
-    <% board.cells.each do |row| %>
+    <% presenter.cells.each do |row| %>
       <ul>
       <% row.each do |mark, link| %>
         <li data-board-cell="<%= mark %>">
@@ -28,13 +28,13 @@
     <% end %>
   </div>
 
-  <% if board.result_message %>
-    <div data-winner="<%= board.winner %>">
-      <%= board.result_message %>
+  <% if presenter.result_message %>
+    <div data-winner="<%= presenter.winner %>">
+      <%= presenter.result_message %>
     </div>
   <% end %>
 
-  <a href="<%= board.restart_link %>">Restart game</a>
-  <a href="<%= board.menu_link %>">Menu</a>
+  <a href="<%= presenter.restart_link %>">Restart game</a>
+  <a href="<%= presenter.menu_link %>">Menu</a>
 </body>
 </html>

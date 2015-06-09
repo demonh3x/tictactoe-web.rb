@@ -6,11 +6,10 @@ module Tictactoe
     module Endpoints
       class ShowBoard
         ROUTE = '/game/board'
-        TEMPLATE_PATH = 'lib/tictactoe/web/templates/board.erb'
 
-        def initialize(show_board)
+        def initialize(show_board, board_template)
           self.show_board = show_board
-          self.template = Template.new
+          self.board_template = board_template
         end
 
         def route
@@ -21,21 +20,14 @@ module Tictactoe
           board = show_board.call
 
           presenter = BoardPresenter.new(board)
-          body = template.render(presenter)
+          body = board_template.render(presenter)
           response = Responses::Success.new(body)
 
           response
         end
 
         private
-        attr_accessor :show_board, :template
-
-        class Template
-          def render(board)
-            template = ERB.new(File.new(TEMPLATE_PATH).read)
-            template.result(binding)
-          end
-        end
+        attr_accessor :show_board, :board_template
       end
     end
   end

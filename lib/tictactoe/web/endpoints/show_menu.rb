@@ -5,23 +5,22 @@ module Tictactoe
     module Endpoints
       class ShowMenu
         ROUTE = '/'
-        TEMPLATE_PATH = 'lib/tictactoe/web/templates/menu.erb'
+
+        def initialize(menu_template)
+          self.menu_template = menu_template
+        end
 
         def route
           ROUTE
         end
 
         def call(environment)
-          body = Template.new.render
+          body = menu_template.render(nil)
           Responses::Success.new(body)
         end
 
         private
-        class Template
-          def render
-            ERB.new(File.new(TEMPLATE_PATH).read).result
-          end
-        end
+        attr_accessor :menu_template
       end
     end
   end
