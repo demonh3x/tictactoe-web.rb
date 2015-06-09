@@ -26,4 +26,9 @@ describe Tictactoe::Web::App do
       expect(html.css('[data-winner="x"]').length).to eq 1
     end
   end
+
+  it 'shows the menu' do
+    get '/'
+    expect(last_response.body).to include('Board size')
+  end
 end
