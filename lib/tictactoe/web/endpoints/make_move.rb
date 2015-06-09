@@ -1,3 +1,5 @@
+require 'tictactoe/web/endpoints/make_move_arguments'
+require 'tictactoe/web/responses/invalid_arguments'
 require 'tictactoe/web/responses/redirect'
 
 module Tictactoe
@@ -16,7 +18,7 @@ module Tictactoe
         end
 
         def call(environment)
-          arguments = Arguments.new(environment)
+          arguments = MakeMoveArguments.new(environment)
           return Responses::InvalidArguments.new unless arguments.valid?
 
           make_move.call(arguments.move)
@@ -25,28 +27,6 @@ module Tictactoe
 
         private
         attr_accessor :make_move, :show_board
-
-        class Arguments
-          def initialize(environment)
-            self.environment = environment
-          end
-
-          def valid?
-            move rescue false
-          end
-
-          def move
-            Integer(query['move'])
-          end
-
-          private
-          attr_accessor :environment
-
-          def query
-            query_string = environment['QUERY_STRING']
-            Rack::Utils.parse_nested_query(query_string)
-          end
-        end
       end
     end
   end
