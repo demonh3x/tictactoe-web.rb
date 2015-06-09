@@ -15,7 +15,7 @@ module Tictactoe
         end
 
         def call(environment)
-          body = menu_template.render
+          body = menu_template.render(nil)
           Responses::Success.new(body)
         end
 
