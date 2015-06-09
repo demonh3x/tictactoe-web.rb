@@ -1,4 +1,4 @@
-task :default => ["run"]
+task :default => ["spec:develop"]
 
 task :run do
   sh 'bundle exec rackup'
