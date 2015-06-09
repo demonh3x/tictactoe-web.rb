@@ -1,5 +1,4 @@
 require 'tictactoe/web/responses/success'
-require 'tictactoe/web/templates/erb_template'
 
 module Tictactoe
   module Web
@@ -7,8 +6,8 @@ module Tictactoe
       class ShowMenu
         ROUTE = '/'
 
-        def initialize
-          self.template = Templates::ErbTemplate.new(:menu)
+        def initialize(menu_template)
+          self.menu_template = menu_template
         end
 
         def route
@@ -16,12 +15,12 @@ module Tictactoe
         end
 
         def call(environment)
-          body = template.render
+          body = menu_template.render
           Responses::Success.new(body)
         end
 
         private
-        attr_accessor :template
+        attr_accessor :menu_template
       end
     end
   end

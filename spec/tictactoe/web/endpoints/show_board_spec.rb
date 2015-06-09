@@ -3,6 +3,7 @@ require 'rack/test'
 require 'nokogiri'
 require 'state_stub'
 require 'tictactoe/web/endpoints/show_board'
+require 'tictactoe/web/templates/erb_template'
 
 RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
   include Rack::Test::Methods
@@ -18,7 +19,8 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
   end
 
   let(:use_case)    { Stub::ShowBoard.new }
-  let(:app)         { described_class.new(use_case) }
+  let(:template)    { Tictactoe::Web::Templates::ErbTemplate.new(:board) }
+  let(:app)         { described_class.new(use_case, template) }
   let(:html)        { get '/game/board'; Nokogiri::HTML(last_response.body) }
   let(:boards)      { html.css('[data-board]') }
   let(:cells)       { html.css('[data-board-cell]') }

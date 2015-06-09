@@ -7,16 +7,29 @@ require 'tictactoe/web/endpoints/show_board'
 require 'tictactoe/web/endpoints/start_game'
 require 'tictactoe/web/endpoints/make_move'
 
+require 'tictactoe/web/templates/erb_template'
+
 module Tictactoe
   module Web
     class App
       def self.new
         game_repository = {}
 
-        show_board = Endpoints::ShowBoard.new(UseCases::ShowBoard.new(game_repository))
-        start_game = Endpoints::StartGame.new(UseCases::StartGame.new(game_repository), show_board)
-        make_move = Endpoints::MakeMove.new(UseCases::MakeMove.new(game_repository), show_board)
-        menu = Endpoints::ShowMenu.new
+        show_board = Endpoints::ShowBoard.new(
+          UseCases::ShowBoard.new(game_repository),
+          Templates::ErbTemplate.new(:board)
+        )
+        start_game = Endpoints::StartGame.new(
+          UseCases::StartGame.new(game_repository),
+          show_board
+        )
+        make_move = Endpoints::MakeMove.new(
+          UseCases::MakeMove.new(game_repository),
+          show_board
+        )
+        menu = Endpoints::ShowMenu.new(
+          Templates::ErbTemplate.new(:board)
+        )
 
         create_web_app([menu, show_board, start_game, make_move])
       end
