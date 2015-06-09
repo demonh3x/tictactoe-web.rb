@@ -19,10 +19,6 @@ module Tictactoe
         "Player #{winner.upcase} has won!"
       end
 
-      def is_finished?
-        state.is_finished?
-      end
-
       def winner
         state.winner && state.winner.to_s
       end
