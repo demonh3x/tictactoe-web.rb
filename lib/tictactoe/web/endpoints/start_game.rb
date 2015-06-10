@@ -18,7 +18,7 @@ module Tictactoe
         end
 
         def call(environment)
-          arguments = StartGameArguments.new(environment)
+          arguments = StartGameArguments.parse_from_environment(environment)
           return Responses::InvalidArguments.new unless arguments.valid?
 
           start_game.call(arguments.board_size, arguments.x_type, arguments.o_type)

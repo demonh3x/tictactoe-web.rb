@@ -6,15 +6,11 @@ module Tictactoe
       end
 
       def call
-        game.state
+        game_repository[:game]
       end
 
       private
       attr_accessor :game_repository
-
-      def game
-        game_repository[:game]
-      end
     end
   end
 end
