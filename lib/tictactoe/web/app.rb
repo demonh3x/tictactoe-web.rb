@@ -21,11 +21,11 @@ module Tictactoe
         )
         start_game = Endpoints::StartGame.new(
           UseCases::StartGame.new(game_repository),
-          show_board
+          show_board.route
         )
         make_move = Endpoints::MakeMove.new(
           UseCases::MakeMove.new(game_repository),
-          show_board
+          show_board.route
         )
         menu = Endpoints::ShowMenu.new(
           Templates::ErbTemplate.new(:menu)
