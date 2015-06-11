@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <% if presenter.should_redirect %>
+    <meta http-equiv="refresh" content="<%= presenter.redirect_timeout %>; url=<%= presenter.redirect_link %>">
+  <% end %>
   <style>
     ul {
       margin: 0;

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rack/test'
 require 'nokogiri'
-require 'state_stub'
+require 'game_stub'
 require 'tictactoe/web/endpoints/show_board'
 require 'tictactoe/web/templates/erb_template'
 
@@ -34,12 +34,15 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 initial board' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [nil, nil, nil,
          nil, nil, nil,
          nil, nil, nil],
          false,
-         nil
+         nil,
+         3,
+         :human,
+         :human
       )
     end
 
@@ -66,7 +69,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
     end
 
     it 'contains a link to restart the game' do
-      expect(links).to include('/game/start?board_size=3')
+      expect(links).to include('/game/start?board_size=3&x_type=human&o_type=human')
     end
 
     it 'does not show the winner' do
@@ -76,18 +79,21 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 4x4 initial board' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [nil, nil, nil, nil,
          nil, nil, nil, nil,
          nil, nil, nil, nil,
          nil, nil, nil, nil],
          false,
-         nil
+         nil,
+         4,
+         :human,
+         :human
       )
     end
 
     it 'contains a link to restart the game with board 4' do
-      expect(links).to include('/game/start?board_size=4')
+      expect(links).to include('/game/start?board_size=4&x_type=human&o_type=human')
     end
 
     it 'contains the board cells' do
@@ -97,7 +103,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with one move' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [:x,  nil, nil,
          nil, nil, nil,
          nil, nil, nil],
@@ -117,7 +123,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with x as the winner' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [:x,  :o,  nil,
          :x,  :o,  nil,
          :x,  nil, nil],
@@ -137,7 +143,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with o as the winner' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [:x,  :o,  :x,
          :x,  :o,  nil,
          nil, :o,  nil],
@@ -153,7 +159,7 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
 
   describe 'given a 3x3 board with a draw' do
     before(:each) do
-      use_case.board = StateStub.new(
+      use_case.board = GameStub.new(
         [:x,  :o,  :x,
          :x,  :o,  :o,
          :o,  :x,  :x],
@@ -166,6 +172,30 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
       expect(html.css('[data-winner="o"]').length).to eq 0
       expect(html.css('[data-winner="x"]').length).to eq 0
       expect(html.css('[data-winner]').length).to eq 1
+    end
+  end
+
+  describe 'when the computer plays next' do
+    before(:each) do
+      ready_to_tick = true
+      use_case.board = GameStub.new(
+        [:x, nil, nil,
+         :o, :o, :x,
+         :x, :x, :o],
+         false,
+         nil,
+         3,
+         :human,
+         :computer,
+         ready_to_tick
+      )
+    end
+
+    it 'tells the browser to refresh to game/tick' do
+      refresh_metas = html.css('head meta[http-equiv="refresh"]')
+      expect(refresh_metas.length).to eq 1
+      meta = refresh_metas.first
+      expect(meta.attr('content')).to include '/game/tick'
     end
   end
 end

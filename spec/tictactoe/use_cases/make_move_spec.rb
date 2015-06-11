@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'game_tick_spy'
 require 'tictactoe/use_cases/make_move'
 
 RSpec.describe Tictactoe::UseCases::MakeMove do
@@ -8,16 +9,6 @@ RSpec.describe Tictactoe::UseCases::MakeMove do
     end
 
     attr_reader :received_move
-  end
-
-  class GameTickSpy
-    def tick
-      @has_tick_been_called = true
-    end
-
-    def has_been_ticked?
-      @has_tick_been_called
-    end
   end
 
   let(:moves)           { MovesSpy.new }

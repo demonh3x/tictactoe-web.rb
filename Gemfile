@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "tictactoe-core", "~> 0.1.1"
+gem "tictactoe-core", "~> 0.1.2"
 gem "rack", "~> 1.6.1"
 
 group :test do

@@ -1,5 +1,6 @@
-require 'tictactoe/web/responses/redirect'
+require 'tictactoe/web/endpoints/start_game_arguments'
 require 'tictactoe/web/responses/invalid_arguments'
+require 'tictactoe/web/responses/redirect'
 
 module Tictactoe
   module Web
@@ -7,9 +8,9 @@ module Tictactoe
       class StartGame
         ROUTE = '/game/start'
 
-        def initialize(start_game, show_board)
+        def initialize(start_game, show_board_route)
           self.start_game = start_game
-          self.show_board = show_board
+          self.show_board_route = show_board_route
         end
 
         def route
@@ -17,37 +18,15 @@ module Tictactoe
         end
 
         def call(environment)
-          arguments = Arguments.new(environment)
+          arguments = StartGameArguments.parse_from_environment(environment)
           return Responses::InvalidArguments.new unless arguments.valid?
 
-          start_game.call(arguments.board_size)
-          Responses::Redirect.new(show_board.route)
+          start_game.call(arguments.board_size, arguments.x_type, arguments.o_type)
+          Responses::Redirect.new(show_board_route)
         end
 
         private
-        attr_accessor :start_game, :show_board
-
-        class Arguments
-          def initialize(environment)
-            self.environment = environment
-          end
-
-          def valid?
-            [3, 4].include? board_size rescue false
-          end
-
-          def board_size
-            Integer(query['board_size'])
-          end
-
-          private
-          attr_accessor :environment
-
-          def query
-            query_string = environment['QUERY_STRING']
-            Rack::Utils.parse_nested_query(query_string)
-          end
-        end
+        attr_accessor :start_game, :show_board_route
       end
     end
   end

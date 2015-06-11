@@ -3,10 +3,23 @@
 <head>
 </head>
 <body>
-  <p>Board size</p>
-  <ul>
-    <li><a href="/game/start?board_size=3">3</a></li>
-    <li><a href="/game/start?board_size=4">4</a></li>
-  </ul>
+  <form action="/game/start" method="get">
+    <p>Board size</p>
+    <ul>
+      <li><input type="radio" name="board_size" value="3" checked>3</li>
+      <li><input type="radio" name="board_size" value="4">4</li>
+    </ul>
+    <p>X player</p>
+    <ul>
+      <li><input type="radio" name="x_type" value="human" checked>Human</li>
+      <li><input type="radio" name="x_type" value="computer">Computer</li>
+    </ul>
+    <p>O player</p>
+    <ul>
+      <li><input type="radio" name="o_type" value="human" checked>Human</li>
+      <li><input type="radio" name="o_type" value="computer">Computer</li>
+    </ul>
+    <input type="submit" value="Start game">
+  </form>
 </body>
 </html>

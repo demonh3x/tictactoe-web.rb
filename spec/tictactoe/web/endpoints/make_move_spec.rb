@@ -15,19 +15,9 @@ RSpec.describe Tictactoe::Web::Endpoints::MakeMove do
     end
   end
 
-  module Stub
-    class Endpoint
-      def initialize(route)
-        @route = route
-      end
-
-      attr_reader :route
-    end
-  end
-
-  let(:use_case)    { Spy::MakeMoveUseCase.new }
-  let(:show_board)  { Stub::Endpoint.new('/game/board') }
-  let(:app)         { described_class.new(use_case, show_board) }
+  let(:use_case)         { Spy::MakeMoveUseCase.new }
+  let(:show_board_route) { '/game/board' }
+  let(:app)              { described_class.new(use_case, show_board_route) }
 
   it 'is mapped to the /game/make_move route' do
     expect(app.route).to eq '/game/make_move'
