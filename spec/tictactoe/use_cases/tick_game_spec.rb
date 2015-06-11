@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'game_tick_spy'
 require 'tictactoe/use_cases/tick_game'
 
 RSpec.describe Tictactoe::UseCases::TickGame do
