@@ -30,7 +30,7 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    tictactoe-core (0.1.1)
+    tictactoe-core (0.1.2)
 
 PLATFORMS
   ruby
@@ -42,4 +42,4 @@ DEPENDENCIES
   rack (~> 1.6.1)
   rack-test (~> 0.6.3)
   rspec (~> 3.1.0)
-  tictactoe-core (~> 0.1.1)
+  tictactoe-core (~> 0.1.2)

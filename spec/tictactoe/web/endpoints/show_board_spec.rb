@@ -174,4 +174,28 @@ RSpec.describe Tictactoe::Web::Endpoints::ShowBoard do
       expect(html.css('[data-winner]').length).to eq 1
     end
   end
+
+  describe 'when the computer plays next' do
+    before(:each) do
+      ready_to_tick = true
+      use_case.board = GameStub.new(
+        [:x, nil, nil,
+         :o, :o, :x,
+         :x, :x, :o],
+         false,
+         nil,
+         3,
+         :human,
+         :computer,
+         ready_to_tick
+      )
+    end
+
+    it 'tells the browser to refresh to game/tick' do
+      refresh_metas = html.css('head meta[http-equiv="refresh"]')
+      expect(refresh_metas.length).to eq 1
+      meta = refresh_metas.first
+      expect(meta.attr('content')).to include '/game/tick'
+    end
+  end
 end

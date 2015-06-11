@@ -7,7 +7,9 @@ describe Tictactoe::Web::App do
   include Rack::Test::Methods
 
   let(:app)  { Rack::Builder.parse_file('config.ru').first }
-  let(:html) { Nokogiri::HTML(last_response.body) }
+  def html
+    Nokogiri::HTML(last_response.body)
+  end
 
   describe 'when x wins the game' do
     def make_moves(*moves)
@@ -34,15 +36,25 @@ describe Tictactoe::Web::App do
     expect(html.css('input[value="computer"][name="o_type"]').length).to eq 1
   end
 
-  describe 'given a game with two computers' do
+  def follow_refresh!
+    refresh = html.css('head meta[http-equiv="refresh"]').first
+    url = refresh.attr('content').split('url=')[1]
+    get url
+  end
+
+  describe 'given a full game with two computers' do
     before(:each) do
       get '/game/start?board_size=3&x_type=computer&o_type=computer'
       follow_redirect!
     end
 
-    it 'has an automatic redirect in the first move' do
-      refresh_metas = html.css('head meta[http-equiv="refresh"]')
-      expect(refresh_metas.length).to eq 1
+    it 'ends in a draw' do
+      9.times do
+        follow_refresh!
+        follow_redirect!
+        expect(last_response).to be_ok
+      end
+      expect(html.css('[data-winner=""]').length).to eq 1
     end
   end
 end
