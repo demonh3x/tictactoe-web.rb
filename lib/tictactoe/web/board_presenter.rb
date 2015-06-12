@@ -20,7 +20,7 @@ module Tictactoe
       end
 
       def winner
-        game.winner && game.winner.to_s
+        game.winner
       end
 
       def restart_link
