@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'fakefs/spec_helpers'
-require 'tictactoe/web/templates/erb_template'
+require 'tictactoe/web/templates/template'
 
-RSpec.describe Tictactoe::Web::Templates::ErbTemplate do
+RSpec.describe Tictactoe::Web::Templates::Template do
   include FakeFS::SpecHelpers
 
   class PresenterStub
@@ -21,8 +21,8 @@ RSpec.describe Tictactoe::Web::Templates::ErbTemplate do
   end
 
   it 'displays the presenter value in the template' do
-    erb_template = described_class.new(:template_name)
+    template = described_class.new(:template_name)
     presenter = PresenterStub.new
-    expect(erb_template.render(presenter)).to eq('template with presented value')
+    expect(template.render(presenter)).to eq('template with presented value')
   end
 end

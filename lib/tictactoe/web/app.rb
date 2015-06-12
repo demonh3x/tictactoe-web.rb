@@ -9,7 +9,7 @@ require 'tictactoe/web/endpoints/start_game'
 require 'tictactoe/web/endpoints/make_move'
 require 'tictactoe/web/endpoints/tick_game'
 
-require 'tictactoe/web/templates/erb_template'
+require 'tictactoe/web/templates/template'
 
 module Tictactoe
   module Web
@@ -19,7 +19,7 @@ module Tictactoe
 
         show_board = Endpoints::ShowBoard.new(
           UseCases::ShowBoard.new(game_repository),
-          Templates::ErbTemplate.new(:board)
+          Templates::Template.new(:board)
         )
         start_game = Endpoints::StartGame.new(
           UseCases::StartGame.new(game_repository),
@@ -34,7 +34,7 @@ module Tictactoe
           show_board.route
         )
         menu = Endpoints::ShowMenu.new(
-          Templates::ErbTemplate.new(:menu)
+          Templates::Template.new(:menu)
         )
 
         create_web_app([menu, show_board, start_game, make_move, tick_game])

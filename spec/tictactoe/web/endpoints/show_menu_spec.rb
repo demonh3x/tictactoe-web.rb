@@ -2,12 +2,12 @@ require 'spec_helper'
 require 'rack/test'
 require 'nokogiri'
 require 'tictactoe/web/endpoints/show_menu'
-require 'tictactoe/web/templates/erb_template'
+require 'tictactoe/web/templates/template'
 
 RSpec.describe Tictactoe::Web::Endpoints::ShowMenu do
   include Rack::Test::Methods
 
-  let(:template)     { Tictactoe::Web::Templates::ErbTemplate.new(:menu) }
+  let(:template)     { Tictactoe::Web::Templates::Template.new(:menu) }
   let(:app)          { described_class.new(template) }
   let(:environment)  { {} }
   let(:response)     { get '/'; last_response }

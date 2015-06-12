@@ -1,7 +1,7 @@
 module Tictactoe
   module Web
     module Templates
-      class ErbTemplate
+      class Template
         def self.lookup_path
           File.dirname(__FILE__)
         end
